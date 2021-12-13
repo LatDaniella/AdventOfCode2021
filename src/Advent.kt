@@ -60,6 +60,7 @@ var mappedStringToNumList = stringList.map {
     println("mapped one: $mappedStringNumList
 }
 
+something
 
  */
 
