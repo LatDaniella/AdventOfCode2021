@@ -1,4 +1,5 @@
 import java.io.File
+import kotlin.math.pow
 
 fun main(args: Array<String>){
     //println(readFile("src/Day1Problem1.txt"))
@@ -6,7 +7,8 @@ fun main(args: Array<String>){
     //println(day1Problem2())
     //println(day2Problem1())
     //println(day2Problem2())
-    println(day3Problem1())
+    //println(day3Problem1())
+    println(day3Problem2())
 
 }
 
@@ -125,7 +127,7 @@ fun day2Problem2() : Int{
 }
 
 fun day3Problem1() : Int{
-    val dataset = readFile("src/Day3Problem1Example.txt").toList()
+    val dataset = readFile("src/Day3Problem1.txt").toList()
     // find new binary numbers (gamma rate and epsilon rate)
     // power is gamma rate * epsilon rate
     // gamma rate can be determined by finding the most common bit
@@ -134,34 +136,78 @@ fun day3Problem1() : Int{
     var epsilonRate = ""
     var zeros: Int
     var ones: Int
-    var i: Int
-    for(n in dataset) {
+    for(i in 0 until dataset[0].length) {
         zeros = 0
         ones = 0
-        i = 0
         for (n in dataset) {
-            if(i < n.length) {
-                if(n.substring(i, i + 1) == "1")
-                    ones++
-                else
-                    zeros++
-                i++
-            }
+            if(n.substring(i, i + 1) == "1")
+                ones++
+            else if(n.substring(i, i + 1) == "0")
+                zeros++
         }
         if(ones > zeros){
             gammaRate += 1
             epsilonRate += 0
         }
-        else{
+        else if(zeros > ones){
             gammaRate += 0
             epsilonRate += 1
         }
     }
-    println(gammaRate)
-    println(epsilonRate)
 
+    var gnum = gammaRate.toLong()
+    var decimalGammaRate = 0
+    var i = 0
+    var gremainder: Long
+
+    while (gnum.toInt() != 0) {
+        gremainder = gnum % 10
+        gnum /= 10
+        decimalGammaRate += (gremainder * 2.0.pow(i.toDouble())).toInt()
+        ++i
+    }
+    var enum = epsilonRate.toLong()
+    var decimalEpsilonRate = 0
+    var m = 0
+    var eremainder: Long
+
+    while (enum.toInt() != 0) {
+        eremainder = enum % 10
+        enum /= 10
+        decimalEpsilonRate += (eremainder * 2.0.pow(m.toDouble())).toInt()
+        ++m
+    }
+
+    return decimalGammaRate * decimalEpsilonRate
+}
+
+fun day3Problem2() : Int {
+    val dataset = readFile("src/Day3Problem1.txt").toList()
+    var gammaRate = ""
+    var epsilonRate = ""
+    var zeros: Int
+    var ones: Int
+    for(i in 0 until dataset[0].length) {
+        zeros = 0
+        ones = 0
+        for (n in dataset) {
+            if(n.substring(i, i + 1) == "1")
+                ones++
+            else if(n.substring(i, i + 1) == "0")
+                zeros++
+        }
+        if(ones >= zeros){
+            gammaRate += 1
+            epsilonRate += 0
+        }
+        else if(zeros > ones){
+            gammaRate += 0
+            epsilonRate += 1
+        }
+    }
     return 0
 }
+
 
 
 /*
@@ -204,5 +250,30 @@ val dataset = readFile("src/Day1Problem2Example.txt").toList()
     val list = listOf(2, 4, 3, 10, 8, 7, 9)
     val newList = list.windowed(2, 2, true)
     println(newList[0].sum())
+
+    var totalGammaRate = 0
+    for(i in 4 downTo 0){
+        when (i) {
+            4 -> totalGammaRate += gammaRate.drop(i).toInt()
+            3 -> totalGammaRate += gammaRate.drop(i).toInt() * 2
+            2 -> totalGammaRate += gammaRate.drop(i).toInt() * 4
+            1 -> totalGammaRate += gammaRate.drop(i).toInt() * 8
+            0 -> totalGammaRate += gammaRate.drop(i).toInt() * 16
+        }
+        println(totalGammaRate)
+        println(gammaRate)
+    }
+
+    var totalEpsilonRate = 0
+    for(i in 4 downTo 0){
+        println(gammaRate.substring(i,i).toInt())
+        when (i) {
+            4 -> totalEpsilonRate += gammaRate.substring(i,gammaRate.length).toInt()
+            3 -> totalEpsilonRate += gammaRate.substring(4,gammaRate.length).toInt() * 2
+            2 -> totalEpsilonRate += gammaRate.substring(4,gammaRate.length).toInt() * 4
+            1 -> totalEpsilonRate += gammaRate.substring(4,gammaRate.length).toInt() * 8
+            0 -> totalEpsilonRate += gammaRate.substring(4,gammaRate.length).toInt() * 16
+        }
+    }
  */
 
