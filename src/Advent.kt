@@ -9,6 +9,19 @@ fun main(args: Array<String>){
     //println(day2Problem2())
     //println(day3Problem1())
     println(day3Problem2())
+    println(Integer.parseInt("101", 2))
+    /*
+    val list = listOf("a", "b", "c")
+    val mutableList = list.toMutableList()
+    for (i in list.indices) {
+        println(i)
+        println(list[i])
+        mutableList.removeAt(0)
+        println(mutableList)
+    }
+
+     */
+
 
 }
 
@@ -182,11 +195,41 @@ fun day3Problem1() : Int{
 }
 
 fun day3Problem2() : Int {
-    val dataset = readFile("src/Day3Problem1.txt").toList()
-    var gammaRate = ""
-    var epsilonRate = ""
+    val dataset = readFile("src/Day3Problem2Example.txt").toList()
     var zeros: Int
     var ones: Int
+    val oGenList = mutableListOf<String>()
+    oGenList.addAll(dataset)
+    println(oGenList)
+    val co2GenList = mutableListOf(dataset.toString())
+    //dataset.joinToString("")
+
+    for(i in 0 until oGenList[0].length) {
+        zeros = 0
+        ones = 0
+        for (n in oGenList) {
+            if(n.substring(i, i + 1) == "1")
+                ones++
+            else if(n.substring(i, i + 1) == "0")
+                zeros++
+        }
+        if(ones >= zeros){
+            for (r in oGenList.size-1 downTo  0) {
+                if(oGenList[r].substring(i,i+1) == "0") {
+                    oGenList.removeAt(r)
+                }
+            }
+        }
+        if(ones >= zeros){
+            for (r in oGenList.size-1 downTo  0) {
+                if(oGenList[r].substring(i,i+1) == "1") {
+                    oGenList.removeAt(r)
+                }
+            }
+        }
+        println(oGenList)
+    }
+/*
     for(i in 0 until dataset[0].length) {
         zeros = 0
         ones = 0
@@ -196,17 +239,49 @@ fun day3Problem2() : Int {
             else if(n.substring(i, i + 1) == "0")
                 zeros++
         }
+        println("one: $ones")
+        println("zero: $zeros")
+
         if(ones >= zeros){
-            gammaRate += 1
-            epsilonRate += 0
+            oxygenGeneratorRating += 1
+            co2ScrubberRating += 0
         }
         else if(zeros > ones){
-            gammaRate += 0
-            epsilonRate += 1
+            oxygenGeneratorRating += 0
+            co2ScrubberRating += 1
         }
+
     }
+    println(oGenList)
+    println(co2GenList)
+
+    var onum = oxygenGeneratorRating.toLong()
+    var decimalOxygenGeneratorRating = 0
+    var j = 0
+    var oremainder: Long
+
+    while (onum.toInt() != 0) {
+        oremainder = onum % 10
+        onum /= 10
+        decimalOxygenGeneratorRating += (oremainder * 2.0.pow(j.toDouble())).toInt()
+        ++j
+    }
+    var cnum = co2ScrubberRating.toLong()
+    var decimalCo2ScrubberRating = 0
+    var m = 0
+    var cremainder: Long
+
+    while (cnum.toInt() != 0) {
+        cremainder = cnum % 10
+        cnum /= 10
+        decimalCo2ScrubberRating += (cremainder * 2.0.pow(m.toDouble())).toInt()
+        ++m
+    }
+
+ */
     return 0
 }
+
 
 
 
