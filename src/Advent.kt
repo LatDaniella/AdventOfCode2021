@@ -8,8 +8,9 @@ fun main(args: Array<String>){
     //println(day2Problem1())
     //println(day2Problem2())
     //println(day3Problem1())
-    println(day3Problem2())
-    println(Integer.parseInt("101", 2))
+    //println(day3Problem2())
+    //println(Integer.parseInt("101", 2))
+    //println(fibonacci(5))
     /*
     val list = listOf("a", "b", "c")
     val mutableList = list.toMutableList()
@@ -21,9 +22,42 @@ fun main(args: Array<String>){
     }
 
      */
-
-
+    val people = listOf("Alice", "Bob", "Carol")
+    //println(giftExchange(people))
 }
+
+// 1,1,2,3,5,8,13...
+fun fibonacci(nth : Int) : Int {
+    when (nth) {
+        0 -> 0
+        1 -> 1
+        2 -> 1
+    }
+    return fibonacci(nth-2) + fibonacci(nth-1)
+}
+
+fun giftExchange(names : List<String>) : String {
+    var pairs = mutableListOf<String>()
+    var finalList = mutableListOf<String>()
+    var int = 0
+    var partner: String
+    for(p in names){
+        pairs.add(p)
+    }
+    for (n in pairs.size-1 downTo  0){
+        int = (Math.random() * (pairs.size-1)).toInt()
+        partner = pairs[int]
+        while(partner == names[n]) {
+            int = (Math.random() * (pairs.size-1)).toInt()
+            partner = pairs[int]
+        }
+        finalList.add(pairs.removeAt(n))
+        finalList.add(pairs.removeAt(int))
+    }
+
+    return finalList.toString()
+}
+
 
 fun readFile(fileName: String) : List<String> {
     return File(fileName).readLines()
